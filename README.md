@@ -1,4 +1,4 @@
-# Office Facility Automation 
+# Office Facility Automated Pipeline - Track, Log, Notify - All Automated
 
 ![Automation](https://img.shields.io/badge/automation-n8n-9b59b6.svg)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
