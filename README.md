@@ -1,6 +1,15 @@
-# Office Facility Automation Pipeline
+# Office Facility Automation 
 
-End-to-end automation pipeline for office facility requests. Captures web form submissions via n8n webhook, generates unique ticket IDs, logs to Google Sheets, and sends dual email notifications (employee + admin). Built with vanilla HTML/CSS/JS frontend and n8n workflow backend. Eliminates manual data entry and reduces processing time by 90%.
+![Automation](https://img.shields.io/badge/automation-n8n-9b59b6.svg)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)
+![Google Sheets](https://img.shields.io/badge/Google%20Sheets-34A853?logo=google-sheets&logoColor=white)
+![Gmail](https://img.shields.io/badge/Gmail-D14836?logo=gmail&logoColor=white)
+![Cost Reduction](https://img.shields.io/badge/cost%20reduction-%E2%82%B91%2C65%2C000%2Fyear-success.svg)
+![Time Saved](https://img.shields.io/badge/time%20saved-330%20hrs%2Fyear-orange.svg)
+
+End-to-end automated ticketing system for office facility requests. Captures web form submissions via n8n webhook, generates unique ticket IDs, logs to Google Sheets, and sends dual email notifications (employee + admin). Built with vanilla HTML/CSS/JS frontend and n8n workflow backend. Eliminates manual data entry and reduces processing time by 90%.
 
 ![N8N Workflow Diagram](N8N_Workflow_Form_To_Inbox_Pipeline.png)
 
