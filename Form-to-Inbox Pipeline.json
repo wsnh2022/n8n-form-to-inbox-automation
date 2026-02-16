@@ -1,0 +1,155 @@
+{
+  "name": "Form-to-Inbox Pipeline",
+  "nodes": [
+    {
+      "parameters": {
+        "sendTo": "={{ $json.Email }}",
+        "subject": "=New Ticket Raised #{{ $json['Ticket ID'] }}",
+        "emailType": "text",
+        "message": "=Dear team,\n\nThank you for your facility request\n- Your ticket {{ $json['Ticket ID'] }} for tracking\n- Expected response time frame - {{ $json['Date Needed'] }}\n- Admin contact for urgent matters \n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [-272, 528],
+      "id": "5f99e128-b410-40c7-98a0-e64868ef4bf1",
+      "name": "Admin Mail",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.Email }}",
+        "subject": "=Request Submitted - Ticket #{{ $json['Ticket ID'] }}",
+        "emailType": "text",
+        "message": "=Dear {{ $json['Employee Name'] }},\n\nThank you for your facility request\n- Your ticket {{ $json['Ticket ID'] }} for tracking\n- Expected response time frame - {{ $json['Date Needed'] }}\n- Admin contact for urgent matters \n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [-272, 272],
+      "id": "c467b59e-29dd-4e12-8580-ced0344b3a23",
+      "name": "Employee Ticket Email Confirmation",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID_HERE",
+          "mode": "list",
+          "cachedResultName": "Office Facility Requests",
+          "cachedResultUrl": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Sheet1",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": ""
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Date Submitted": "={{ $json.body.today_date }}",
+            "Ticket ID": "={{ $json.ticketId }}",
+            "Status": "={{ $json.status }}",
+            "Employee Name": "={{ $json.body.name }}",
+            "Email": "={{ $json.body.email }}",
+            "Department": "={{ $json.body.department }}",
+            "Date Needed": "={{ $json.body.date_needed }}",
+            "Request Type": "={{ $json.body.request_type }}",
+            "Additional Details": "={{ $json.body.details }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {"id": "Ticket ID", "displayName": "Ticket ID", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true},
+            {"id": "Status", "displayName": "Status", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true},
+            {"id": "Date Submitted", "displayName": "Date Submitted", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true},
+            {"id": "Employee Name", "displayName": "Employee Name", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true},
+            {"id": "Email", "displayName": "Email", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true},
+            {"id": "Department", "displayName": "Department", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true},
+            {"id": "Date Needed", "displayName": "Date Needed", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true},
+            {"id": "Request Type", "displayName": "Request Type", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true},
+            {"id": "Services", "displayName": "Services", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true},
+            {"id": "Additional Details", "displayName": "Additional Details", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true}
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [-576, 384],
+      "id": "967bfdf9-e6a9-44e2-b673-7bce4a832b13",
+      "name": "Log to Admin Sheet",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "jsCode": "/**\n * FACILITY REQUEST TICKET GENERATOR\n * \n * Generates unique ticket IDs for facility requests and prepares\n * data for Google Sheets logging and email notifications.\n * \n * Ticket ID Format: FAC-YYYY-MMDD-XXXXX\n * Example: FAC-2025-0724-56789\n */\n\nconst now = new Date();\nconst year = now.getFullYear();\nconst month = String(now.getMonth() + 1).padStart(2, '0');\nconst day = String(now.getDate()).padStart(2, '0');\nconst timestamp = now.getTime();\n\nconst ticketId = `FAC-${year}-${month}${day}-${String(timestamp).slice(-5)}`;\nconst submittedAt = now.toISOString().split('T')[0] + ' ' + now.toLocaleTimeString();\n\nreturn {\n  ...$input.first().json,\n  ticketId: ticketId,\n  submittedAt: submittedAt,\n  status: 'New'\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-1040, 384],
+      "id": "7fb8d0fd-c8ed-4a7f-9460-8829ec7ef5f4",
+      "name": "Generate Ticket ID"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ {\n  \"ticketNumber\": $json.ticketId,\n  \"status\": \"success\",\n  \"message\": \"Ticket created successfully\"\n} }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [-816, 384],
+      "id": "83e5ced4-ff2e-4cbc-9cb7-eff0aaa90675",
+      "name": "Revert Ticket To Website"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "facility-request",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-1296, 384],
+      "id": "d1757851-909b-4f2d-ad5c-bccb3f1388b3",
+      "name": "Get Data From Website"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Log to Admin Sheet": {
+      "main": [
+        [
+          {"node": "Employee Ticket Email Confirmation", "type": "main", "index": 0},
+          {"node": "Admin Mail", "type": "main", "index": 0}
+        ]
+      ]
+    },
+    "Generate Ticket ID": {
+      "main": [[{"node": "Revert Ticket To Website", "type": "main", "index": 0}]]
+    },
+    "Revert Ticket To Website": {
+      "main": [[{"node": "Log to Admin Sheet", "type": "main", "index": 0}]]
+    },
+    "Get Data From Website": {
+      "main": [[{"node": "Generate Ticket ID", "type": "main", "index": 0}]]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": []
+}
