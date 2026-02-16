@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Office Facility Request Form</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      color: white;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    .form-content {
+      padding: 40px;
+    }
+
+    .form-group {
+      margin-bottom: 32px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #374151;
+      margin-bottom: 8px;
+    }
+
+    .required {
+      color: #ef4444;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="email"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 16px;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: #f9fafb;
+    }
+
+    input[type="text"]:focus,
+    input[type="date"]:focus,
+    input[type="email"]:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #4f46e5;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+
+    .radio-group {
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 24px;
+      border: 2px solid #e5e7eb;
+    }
+
+    .radio-group h3 {
+      font-size: 1.1rem;
+      color: #374151;
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+
+    .radio-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 12px;
+    }
+
+    .radio-option {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: white;
+      border: 2px solid #e5e7eb;
+    }
+
+    .radio-option:hover {
+      border-color: #4f46e5;
+      background: #f0f9ff;
+    }
+
+    .radio-option input[type="radio"] {
+      margin-right: 12px;
+      transform: scale(1.2);
+      accent-color: #4f46e5;
+    }
+
+    .radio-option.selected {
+      border-color: #4f46e5;
+      background: #ede9fe;
+    }
+
+    .checkbox-group {
+      background: #f0f9ff;
+      border-radius: 12px;
+      padding: 24px;
+      border: 2px solid #0ea5e9;
+      margin-top: 16px;
+    }
+
+    .checkbox-group.hidden {
+      display: none;
+    }
+
+    .checkbox-group h4 {
+      font-size: 1rem;
+      color: #0c4a6e;
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+
+    .checkbox-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+    .checkbox-option {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: white;
+      border: 2px solid #bae6fd;
+    }
+
+    .checkbox-option:hover {
+      border-color: #0ea5e9;
+      background: #f0f9ff;
+    }
+
+    .checkbox-option input[type="checkbox"] {
+      margin-right: 12px;
+      transform: scale(1.2);
+      accent-color: #0ea5e9;
+    }
+
+    .submit-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      color: white;
+      padding: 18px 32px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 32px;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
+    }
+
+    .submit-btn:active {
+      transform: translateY(0);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .progress-bar {
+      height: 4px;
+      background: #e5e7eb;
+      border-radius: 2px;
+      margin-bottom: 40px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      width: 0%;
+      transition: width 0.3s ease;
+      border-radius: 2px;
+    }
+
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 2rem;
+      }
+      
+      .form-content {
+        padding: 24px;
+      }
+      
+      .radio-options {
+        grid-template-columns: 1fr;
+      }
+      
+      .checkbox-options {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.6s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Server Down Modal Styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 16px;
+      padding: 32px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+      text-align: center;
+      animation: modalSlideIn 0.3s ease-out;
+    }
+
+    @keyframes modalSlideIn {
+      from { 
+        opacity: 0; 
+        transform: translateY(-30px) scale(0.95); 
+      }
+      to { 
+        opacity: 1; 
+        transform: translateY(0) scale(1); 
+      }
+    }
+
+    .modal-icon {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      border-radius: 50%;
+      margin: 0 auto 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 28px;
+    }
+
+    .modal-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #374151;
+      margin-bottom: 12px;
+    }
+
+    .modal-message {
+      color: #6b7280;
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 24px;
+    }
+
+    .modal-btn {
+      padding: 12px 24px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .modal-btn.primary {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      color: white;
+    }
+
+    .modal-btn.primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    }
+
+    .modal-btn.primary:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .modal-btn.secondary {
+      background: #f3f4f6;
+      color: #374151;
+      border: 2px solid #e5e7eb;
+    }
+
+    .modal-btn.secondary:hover {
+      background: #e5e7eb;
+    }
+
+    /* Ticket Display Styles */
+    .ticket-display {
+      background: #f0f9ff;
+      border-radius: 12px;
+      padding: 24px;
+      margin: 20px 0;
+      border: 2px solid #0ea5e9;
+      text-align: center;
+    }
+
+    .ticket-label {
+      font-size: 0.875rem;
+      color: #6b7280;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .ticket-number {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #0c4a6e;
+      font-family: 'Courier New', monospace;
+      margin-bottom: 16px;
+      letter-spacing: 1px;
+      background: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      border: 2px solid #bae6fd;
+      display: inline-block;
+    }
+
+    .copy-btn {
+      background: #0ea5e9;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .copy-btn:hover {
+      background: #0284c7;
+      transform: translateY(-1px);
+    }
+
+    .copy-btn.copied {
+      background: #16a34a;
+      transform: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container fade-in">
+    <div class="header">
+      <h1>Office Facility Request</h1>
+      <p>Submit your facility and service requests easily</p>
+    </div>
+    
+    <div class="form-content">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      
+      <form action="http://localhost:5678/webhook/facility-request-v1" method="POST" id="facilityForm">
+        <div class="form-group">
+          <label for="today_date">Today's Date <span class="required">*</span></label>
+          <input type="date" name="today_date" id="today_date" required>
+        </div>
+
+        <div class="form-group">
+          <label for="name">Full Name <span class="required">*</span></label>
+          <input type="text" name="name" id="name" placeholder="Enter your full name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address <span class="required">*</span></label>
+          <input type="email" name="email" id="email" placeholder="Enter your email address" required>
+        </div>
+
+        <div class="form-group">
+          <label for="department">Department <span class="required">*</span></label>
+          <select name="department" id="department" required>
+            <option value="">Select your department</option>
+            <option value="IT">Information Technology (IT)</option>
+            <option value="HR">Human Resources (HR)</option>
+            <option value="Finance">Finance & Accounting</option>
+            <option value="Marketing">Marketing & Communications</option>
+            <option value="Operations">Operations</option>
+            <option value="Sales">Sales</option>
+            <option value="Legal">Legal</option>
+            <option value="Admin">Administration</option>
+            <option value="Engineering">Engineering</option>
+            <option value="Research">Research & Development</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="date_needed">Date Needed <span class="required">*</span></label>
+          <input type="date" name="date_needed" id="date_needed" required>
+        </div>
+
+        <div class="form-group">
+          <div class="radio-group">
+            <h3>What type of request are you submitting today? <span class="required">*</span></h3>
+            <div class="radio-options">
+              <label class="radio-option">
+                <input type="radio" name="request_type" value="Moving services" onclick="toggleCourier(false)">
+                <span>Moving services</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="request_type" value="Office supplies" onclick="toggleCourier(false)">
+                <span>Office supplies</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="request_type" value="Parking permit" onclick="toggleCourier(false)">
+                <span>Parking permit</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="request_type" value="Printing/Copying" onclick="toggleCourier(false)">
+                <span>Printing/Copying</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="request_type" value="Room setup" onclick="toggleCourier(false)">
+                <span>Room setup</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="request_type" value="Shredding services" onclick="toggleCourier(false)">
+                <span>Shredding services</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="request_type" value="New/Replacement Key" onclick="toggleCourier(false)">
+                <span>New/replacement office key or key fob</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="request_type" value="Courier" onclick="toggleCourier(true)">
+                <span>Courier</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="request_type" value="Other" onclick="toggleCourier(false)">
+                <span>Other</span>
+              </label>
+            </div>
+          </div>
+
+          <div id="courier-options" class="checkbox-group hidden">
+            <h4>Select Courier Services</h4>
+            <div class="checkbox-options">
+              <label class="checkbox-option">
+                <input type="checkbox" name="courier[]" value="BluDart">
+                <span>BluDart</span>
+              </label>
+              <label class="checkbox-option">
+                <input type="checkbox" name="courier[]" value="DTDC">
+                <span>DTDC</span>
+              </label>
+              <label class="checkbox-option">
+                <input type="checkbox" name="courier[]" value="PostOffice">
+                <span>PostOffice</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="details">Additional Details</label>
+          <textarea name="details" id="details" rows="4" placeholder="Please provide any additional information about your request..."></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn">Submit Request</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Success Modal (Ticket Number) -->
+  <div id="successModal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-icon" style="background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);">✓</div>
+      <h2 class="modal-title">Request Submitted Successfully!</h2>
+      <p class="modal-message">
+        Your facility request has been submitted. Please save your ticket number for reference:
+      </p>
+      
+      <div class="ticket-display">
+        <div class="ticket-label">Ticket Number</div>
+        <div class="ticket-number" id="ticketNumber">#12345</div>
+        <button type="button" class="copy-btn" onclick="copyTicketNumber()">
+          📋 Copy Ticket Number
+        </button>
+      </div>
+
+      <div class="modal-buttons">
+        <button type="button" class="modal-btn primary" onclick="closeModal()">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Server Not Active Modal -->
+  <div id="serverNotActiveModal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-icon">⚠</div>
+      <h2 class="modal-title">Server Not Active</h2>
+      <p class="modal-message">
+        The server is currently not responding. Please try submitting your request after sometime.
+      </p>
+
+      <div class="modal-buttons">
+        <button type="button" class="modal-btn secondary" onclick="closeModal()">
+          Close
+        </button>
+        <button type="button" class="modal-btn primary" onclick="retrySubmission()">
+          Try Again
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleCourier(show) {
+      const courierSection = document.getElementById('courier-options');
+      courierSection.classList.toggle('hidden', !show);
+      updateProgress();
+    }
+
+    // Add selection styling to radio options
+    document.querySelectorAll('input[type="radio"]').forEach(radio => {
+      radio.addEventListener('change', function() {
+        // Remove selected class from all radio options in this group
+        document.querySelectorAll(`input[name="${this.name}"]`).forEach(r => {
+          r.closest('.radio-option').classList.remove('selected');
+        });
+        // Add selected class to current option
+        this.closest('.radio-option').classList.add('selected');
+        updateProgress();
+      });
+    });
+
+    // Auto-fill today's date
+    document.getElementById('today_date').valueAsDate = new Date();
+
+    // Progress tracking
+    function updateProgress() {
+      const form = document.getElementById('facilityForm');
+      const requiredFields = form.querySelectorAll('[required]');
+      let filledFields = 0;
+      
+      requiredFields.forEach(field => {
+        if (field.value.trim() !== '') {
+          filledFields++;
+        }
+      });
+      
+      const progress = (filledFields / requiredFields.length) * 100;
+      document.getElementById('progressFill').style.width = progress + '%';
+    }
+
+    // Add event listeners for progress tracking
+    document.querySelectorAll('input, textarea, select').forEach(input => {
+      input.addEventListener('input', updateProgress);
+      input.addEventListener('change', updateProgress);
+    });
+
+    // Initialize progress
+    updateProgress();
+
+    // Form submission with 60-second timeout for n8n workflow response
+    document.getElementById('facilityForm').addEventListener('submit', async function(e) {
+      e.preventDefault(); // Prevent default form submission
+      
+      const submitBtn = document.querySelector('.submit-btn');
+      const originalText = submitBtn.innerHTML;
+      
+      // Update button state
+      submitBtn.innerHTML = 'Submitting...';
+      submitBtn.disabled = true;
+      
+      try {
+        // Create FormData object
+        const formData = new FormData(this);
+        
+        // Submit the form with 60-second timeout
+        const response = await fetch(this.action, {
+          method: this.method,
+          body: formData,
+          signal: AbortSignal.timeout(60000) // 60 second timeout
+        });
+        
+        if (response.ok) {
+          // Try to parse the response to get ticket number
+          const responseData = await response.json();
+          
+          // Extract ticket number from response
+          // Adjust this based on your n8n workflow response format
+          const ticketNumber = responseData.ticketNumber || responseData.ticket_id || responseData.id || 'N/A';
+          
+          // Show success modal with ticket number
+          showSuccessModal(ticketNumber);
+          
+          // Reset form
+          this.reset();
+          document.getElementById('today_date').valueAsDate = new Date();
+          updateProgress();
+          
+        } else {
+          throw new Error(`Server responded with status: ${response.status}`);
+        }
+        
+      } catch (error) {
+        console.error('Form submission error:', error);
+        
+        if (error.name === 'TimeoutError') {
+          // 60 seconds passed without response - show server not active modal
+          showServerNotActiveModal();
+        } else {
+          // Other errors - also show server not active modal
+          showServerNotActiveModal();
+        }
+      } finally {
+        // Reset button state
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+      }
+    });
+
+    // Modal functions
+    function showSuccessModal(ticketNumber) {
+      document.getElementById('ticketNumber').textContent = `#${ticketNumber}`;
+      document.getElementById('successModal').classList.add('show');
+    }
+
+    function showServerNotActiveModal() {
+      document.getElementById('serverNotActiveModal').classList.add('show');
+    }
+
+    function closeModal() {
+      document.getElementById('successModal').classList.remove('show');
+      document.getElementById('serverNotActiveModal').classList.remove('show');
+    }
+
+    function retrySubmission() {
+      closeModal();
+      // Trigger form submission again
+      document.getElementById('facilityForm').dispatchEvent(new Event('submit'));
+    }
+
+    function copyTicketNumber() {
+      const ticketNumber = document.getElementById('ticketNumber').textContent;
+      const copyBtn = document.querySelector('.copy-btn');
+      
+      // Copy to clipboard
+      navigator.clipboard.writeText(ticketNumber).then(() => {
+        // Show copied feedback
+        copyBtn.innerHTML = '✓ Copied!';
+        copyBtn.classList.add('copied');
+        
+        // Reset button after 2 seconds
+        setTimeout(() => {
+          copyBtn.innerHTML = '📋 Copy Ticket Number';
+          copyBtn.classList.remove('copied');
+        }, 2000);
+      }).catch(() => {
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = ticketNumber;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        
+        copyBtn.innerHTML = '✓ Copied!';
+        copyBtn.classList.add('copied');
+        setTimeout(() => {
+          copyBtn.innerHTML = '📋 Copy Ticket Number';
+          copyBtn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+
+    // Close modal when clicking outside of it
+    document.addEventListener('click', function(e) {
+      if (e.target.classList.contains('modal-overlay')) {
+        closeModal();
+      }
+    });
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeModal();
+      }
+    });
+  </script>
+</body>
+</html>
